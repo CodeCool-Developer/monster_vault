@@ -204,6 +204,17 @@ AddEventHandler('monster_vault:putItem', function(job, type, item, count)
         return
     end
 
+    if ArrayIsInOne(Config.VaultInventory[job].ItemBlackList, item) then
+        pcall(function()
+            Config.ServerOnNotify(xPlayer, {
+                message = 'คุณไม่สามารถเก็บไอเทม "' .. item .. '" เข้าตู้เซฟนี้ได้',
+                type = 'warning',
+                duration = 4000
+            })
+        end)
+        return
+    end
+
     if type == 'item_standard' then
         local playerItemCount = xPlayer.getInventoryItem(item).count
         if playerItemCount >= count and count > 0 then
