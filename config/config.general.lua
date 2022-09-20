@@ -93,27 +93,26 @@ Config.ItemBlackList = {
 
 --TODO -- ตัวอย่างการใช้งานกับ nc_discordlogs หรือ azael_dc-serverlogs ตรง DiscordHook ให้เปลี่ยนจากใส่ link เป็นใส่ชื่อ hook ที่สร้างไว้ใน script log ของแต่ละเจ้า
 --TODO -- และใน config.function.lua ที่ Config.ServerOnSendDiscord ให้ส่งไปตามตัวอย่างได้เลย
-
-['ambulance'] = {
-    Name = 'หมอ',
-    Coords = vector3(339.8, -575.32, 43.32),
-    Heading = 342.16,
-    Model = 'p_v_43_safe_s',
-    AllowBlackMoney = false,
-    NeedItemLicense = {
-        'vault_key_ambulance',
-    },
-    ItemBlackList = {
-        'money',
-        'water',
-        'WEAPON_GOLFCLUB',
-    },
-    DiscordHook = {
-        ["PutItem"]   = "vaultAmbulancePutItem", -- นำไอเท็มเข้า
-        ["PutMoney"]  = "vaultAmbulancePutMoney", -- นำเงินเข้า
-        ["PutWeapon"] = "vaultAmbulancePutWeapon", -- นำอาวุธเข้า
-        ["GetItem"]   = "vaultAmbulanceGetItem", -- นำไอเท็มออก
-        ["GetMoney"]  = "vaultAmbulanceGetMoney", -- นำเงินออก
-        ["GetWeapon"] = "vaultAmbulanceGetWeapon", -- นำอาวุธออก
-    }
-},
+--['ambulance'] = {
+--    Name = 'หมอ',
+--    Coords = vector3(339.8, -575.32, 43.32),
+--     Heading = 342.16,
+--     Model = 'p_v_43_safe_s',
+--     AllowBlackMoney = false,
+--     NeedItemLicense = {
+--         'vault_key_ambulance',
+--     },
+--     ItemBlackList = {
+--         'money',
+--         'water',
+--         'WEAPON_GOLFCLUB',
+--     },
+--     DiscordHook = {
+--         ["PutItem"]   = "vaultAmbulancePutItem", -- นำไอเท็มเข้า
+--         ["PutMoney"]  = "vaultAmbulancePutMoney", -- นำเงินเข้า
+--         ["PutWeapon"] = "vaultAmbulancePutWeapon", -- นำอาวุธเข้า
+--          ["GetItem"]   = "vaultAmbulanceGetItem", -- นำไอเท็มออก
+--         ["GetMoney"]  = "vaultAmbulanceGetMoney", -- นำเงินออก
+--         ["GetWeapon"] = "vaultAmbulanceGetWeapon", -- นำอาวุธออก
+--     }
+-- },
