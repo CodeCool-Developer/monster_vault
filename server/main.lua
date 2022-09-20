@@ -18,7 +18,7 @@ function SendToDiscordLog(xPlayer, vaultJob, type, item, count, message)
 end
 
 RegisterServerEvent('monster_vault:getItem')
-AddEventHandler('monster_vault:getItem', function(--[[owner,--]] job, type, item, count)
+AddEventHandler('monster_vault:getItem', function(job, type, item, count)
     local _source = source
     local xPlayer = ESX.GetPlayerFromId(_source)
     local xPlayerOwner = ESX.GetPlayerFromIdentifier(xPlayer.identifier)
@@ -188,14 +188,24 @@ AddEventHandler('monster_vault:getItem', function(--[[owner,--]] job, type, item
 end)
 
 RegisterServerEvent('monster_vault:putItem')
-AddEventHandler('monster_vault:putItem', function(--[[owner,--]] job, type, item, count)
+AddEventHandler('monster_vault:putItem', function(job, type, item, count)
     local _source = source
     local xPlayer = ESX.GetPlayerFromId(_source)
     local xPlayerOwner = ESX.GetPlayerFromIdentifier(xPlayer.identifier)
 
+    if ArrayIsInOne(Config.ItemBlackList, item) then
+        pcall(function()
+            Config.ServerOnNotify(xPlayer, {
+                message = 'คุณไม่สามารถเก็บไอเทม "' .. item .. '" เข้าตู้เซฟนี้ได้',
+                type = 'warning',
+                duration = 4000
+            })
+        end)
+        return
+    end
+
     if type == 'item_standard' then
         local playerItemCount = xPlayer.getInventoryItem(item).count
-
         if playerItemCount >= count and count > 0 then
             if xPlayer.job.name == job then
                 TriggerEvent('esx_addoninventory:getSharedInventory', 'society_' .. job, function(inventory)
@@ -362,6 +372,8 @@ ESX.RegisterServerCallback('monster_vault:getVaultInventory', function(source, c
                 blackMoney = 0
             end
 
+            print(typeVault)
+
             TriggerEvent('esx_addoninventory:getSharedInventory', typeVault, function(inventory)
                 items = inventory.items
             end)
@@ -402,3 +414,13 @@ ESX.RegisterServerCallback('monster_vault:getVaultInventory', function(source, c
         cb(false)
     end
 end)
+
+function ArrayIsInOne(list, search)
+    local text = search:lower()
+    for k, v in ipairs(list) do
+        if v:lower() == text:lower() then
+            return true
+        end
+    end
+    return false
+end
