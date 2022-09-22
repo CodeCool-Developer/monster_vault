@@ -1,10 +1,11 @@
 # monster_vault หรือ esx_vault (FiveM) 
-ใช้งานแทน monster_vault ตัวเดิม เพิ่มเติมคือมี config ใหม่ ปรับแต่งง่าย แยก Discord log ของแต่ละตู้เซฟ อื่นๆ
+ใช้งานแทน monster_vault ตัวเดิม เพิ่มเติมคือมี config ใหม่ กำหนดไอเทมที่ห้ามเก็บเข้าตู้ได้ด้วย ปรับแต่งง่าย แยก Discord log ของแต่ละตู้เซฟและอื่นๆ
+
 
 ### Discord : [discord.gg/K7PDe2jfpW](https://discord.gg/K7PDe2jfpW)
 
 ## ตัวอย่าง Config และ Function
-### ตัวอย่าง Config [config.general.lua](https://github.com/CodeCool-Developer/monster_vault/blob/main/config/config.general.lua)
+### ตัวอย่าง Config ตู้เซฟ [config.general.lua](https://github.com/CodeCool-Developer/monster_vault/blob/main/config/config.general.lua)
 ```
 Config.VaultInventory = {
     ['vault'] = {
@@ -12,12 +13,17 @@ Config.VaultInventory = {
         Coords = vector3(1734.24, 3323.88, 41.24),
         Heading = 12.36,
         Model = '',
+        AllowBlackMoney = true,         -- vault_black_money
         NeedItemLicense = {
             'vault_key',
             'vault_key_3_day',
             'vault_key_7_day',
         },
-        AllowBlackMoney = true,         -- vault_black_money
+        ItemBlackList = {
+            'money',
+            'water',
+            'WEAPON_GOLFCLUB',
+        },
         DiscordHook = {
             ["PutItem"]     = "link discord หรือ hook name", -- นำไอเท็มเข้า
             ["PutMoney"]    = "link discord หรือ hook name", -- นำเงินเข้า
@@ -32,10 +38,15 @@ Config.VaultInventory = {
         Coords = vector3(452.24, -974.56, 30.68),
         Heading = 268.94,
         Model = 'p_v_43_safe_s',
+        AllowBlackMoney = false,         -- society_police_black_money
         NeedItemLicense = {
             'vault_key_police',
         },
-        AllowBlackMoney = false,         -- society_police_black_money
+        ItemBlackList = {
+            'money',
+            'water',
+            'WEAPON_GOLFCLUB',
+        },
         DiscordHook = {
             ["PutItem"]     = "link discord หรือ hook name", -- นำไอเท็มเข้า
             ["PutMoney"]    = "link discord หรือ hook name", -- นำเงินเข้า
@@ -47,6 +58,7 @@ Config.VaultInventory = {
     },
 }
 ```
+
 
 ### ตัวอย่าง Config [config.function.lua](https://github.com/CodeCool-Developer/monster_vault/blob/main/config/config.function.lua)
 ```

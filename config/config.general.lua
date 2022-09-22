@@ -2,7 +2,7 @@ Config = {}
 
 Config.EventRoute = {
     ['openVaultInventory'] = 'esx_inventoryhud:openVaultInventory', -- ของกระเป๋า NC (ถ้าไม่ตรง ให้อ่านคำอธิบายด้านล่าง)
-    ['openVaultInventory'] = 'monster_inventoryhud:openVaultInventory', -- ของกระเป๋า esx_inventoryhud (ถ้าไม่ตรง ให้อ่านคำอธิบายด้านล่าง)
+    --['openVaultInventory'] = 'monster_inventoryhud:openVaultInventory', -- ของกระเป๋า esx_inventoryhud (ถ้าไม่ตรง ให้อ่านคำอธิบายด้านล่าง)
 }
 
 ---อธิบาย ['openVaultInventory'] เพิ่มเติม
