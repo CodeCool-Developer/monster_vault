@@ -2,7 +2,7 @@ fx_version 'adamant'
 
 game 'gta5'
 
-version '1.0.0'
+version '1.1.0'
 name 'monster_vault'
 author 'Modify By CodeCool Developer'
 description 'https://discord.gg/K7PDe2jfpW'
