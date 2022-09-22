@@ -40,7 +40,7 @@ function OpenVaultInventoryMenu(data)
             if not inventory then
                 Config.ClientOnNotify('คุณไม่มี กุญแจ ในการเปิดตู้เซฟ!')
             else
-                TriggerEvent("esx_inventoryhud:openVaultInventory", inventory)
+                TriggerEvent(Config.EventRoute['openVaultInventory'], inventory)
             end
         end, data, false)
     else
