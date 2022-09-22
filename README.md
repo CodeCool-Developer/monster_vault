@@ -1,10 +1,20 @@
 # monster_vault หรือ esx_vault (FiveM) 
 ใช้งานแทน monster_vault ตัวเดิม เพิ่มเติมคือมี config ใหม่ กำหนดไอเทมที่ห้ามเก็บเข้าตู้ได้ด้วย ปรับแต่งง่าย แยก Discord log ของแต่ละตู้เซฟและอื่นๆ
 
-
 ### Discord : [discord.gg/K7PDe2jfpW](https://discord.gg/K7PDe2jfpW)
 
 ## ตัวอย่าง Config และ Function
+### ตัวอย่าง Config [config.function.lua](https://github.com/CodeCool-Developer/monster_vault/blob/main/config/config.function.lua)
+```
+Config.EventRoute = {
+    ['openVaultInventory'] = 'esx_inventoryhud:openVaultInventory',
+}
+```
+> openVaultInventory คือ ชื่อ event ไว้สำหรับเปิดหน้าต่างตู้เซฟของแต่ละกระเป๋า
+>> ถ้ากระเป๋า NC ให้ดูที่ nc_inventory_bridge/config.lua
+>
+>> ถ้ากระเป๋า esx_inventoryhud ให้ดูที่ esx_inventoryhud/client/vault.lua
+------------------------------------------------------------------
 ### ตัวอย่าง Config ตู้เซฟ [config.general.lua](https://github.com/CodeCool-Developer/monster_vault/blob/main/config/config.general.lua)
 ```
 Config.VaultInventory = {
