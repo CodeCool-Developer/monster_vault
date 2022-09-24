@@ -60,7 +60,6 @@ Citizen.CreateThread(function()
             FreezeEntityPosition(obj, true)
         end)
     end
-
 end)
 
 -- Key controls
@@ -84,20 +83,4 @@ end)
 
 function getMonsterVaultLicense()
     return vaultType
-end
-
-function DrawText3Ds(x, y, z, text)
-    local onScreen, _x, _y = World3dToScreen2d(x, y, z)
-    local px, py, pz = table.unpack(GetGameplayCamCoords())
-
-    SetTextScale(0.3, 0.3)
-    SetTextFont(6)
-    SetTextProportional(1)
-    SetTextColour(255, 255, 255, 215)
-    SetTextEntry("STRING")
-    SetTextCentre(1)
-    AddTextComponentString(text)
-    DrawText(_x, _y)
-    local factor = (string.len(text)) / 450
-    DrawRect(_x, _y + 0.0110, 0.015 + factor, 0.03, 41, 11, 41, 100)
 end
