@@ -21,7 +21,6 @@ RegisterServerEvent('monster_vault:getItem')
 AddEventHandler('monster_vault:getItem', function(job, type, item, count)
     local _source = source
     local xPlayer = ESX.GetPlayerFromId(_source)
-    local xPlayerOwner = ESX.GetPlayerFromIdentifier(xPlayer.identifier)
 
     if type == 'item_standard' then
 
@@ -52,7 +51,7 @@ AddEventHandler('monster_vault:getItem', function(job, type, item, count)
                 end
             end)
         elseif job == 'vault' then
-            TriggerEvent('esx_addoninventory:getInventory', 'vault', xPlayerOwner.identifier, function(inventory)
+            TriggerEvent('esx_addoninventory:getInventory', 'vault', xPlayer.identifier, function(inventory)
                 local inventoryItem = inventory.getItem(item)
 
                 if count > 0 and inventoryItem.count >= count then
@@ -82,7 +81,6 @@ AddEventHandler('monster_vault:getItem', function(job, type, item, count)
                 duration = 4000
             })
         end
-
     elseif type == 'item_account' then
         if xPlayer.job.name == job then
             TriggerEvent('esx_addonaccount:getSharedAccount', 'society_' .. job .. '_' .. item, function(account)
@@ -101,7 +99,7 @@ AddEventHandler('monster_vault:getItem', function(job, type, item, count)
                 end
             end)
         elseif job == 'vault' then
-            TriggerEvent('esx_addonaccount:getAccount', 'vault_' .. item, xPlayerOwner.identifier, function(account)
+           TriggerEvent('esx_addonaccount:getAccount', 'vault_' .. item, xPlayer.identifier, function(account)
                 local roomAccountMoney = account.money
 
                 if roomAccountMoney >= count then
@@ -114,7 +112,7 @@ AddEventHandler('monster_vault:getItem', function(job, type, item, count)
                         message = 'จำนวนเงินไม่ถูกต้อง',
                         type = 'error',
                         duration = 4000
-                    })
+                     })
                 end
             end)
         else
@@ -151,7 +149,7 @@ AddEventHandler('monster_vault:getItem', function(job, type, item, count)
                 SendToDiscordLog(xPlayer, job, 'GetWeapon', item, count, msg)
             end)
         elseif job == 'vault' then
-            TriggerEvent('esx_datastore:getDataStore', 'vault', xPlayerOwner.identifier, function(store)
+            TriggerEvent('esx_datastore:getDataStore', 'vault', xPlayer.identifier, function(store)
                 local storeWeapons = store.get('weapons') or {}
                 local weaponName = nil
                 local ammo = nil
@@ -191,7 +189,6 @@ RegisterServerEvent('monster_vault:putItem')
 AddEventHandler('monster_vault:putItem', function(job, type, item, count)
     local _source = source
     local xPlayer = ESX.GetPlayerFromId(_source)
-    local xPlayerOwner = ESX.GetPlayerFromIdentifier(xPlayer.identifier)
 
     if ArrayIsInOne(Config.ItemBlackList, item) then
         pcall(function()
@@ -226,7 +223,7 @@ AddEventHandler('monster_vault:putItem', function(job, type, item, count)
                     SendToDiscordLog(xPlayer, job, 'PutItem', item, count)
                 end)
             elseif job == 'vault' then
-                TriggerEvent('esx_addoninventory:getInventory', 'vault', xPlayerOwner.identifier, function(inventory)
+                TriggerEvent('esx_addoninventory:getInventory', 'vault', xPlayer.identifier, function(inventory)
                     xPlayer.removeInventoryItem(item, count)
                     inventory.addItem(item, count)
                     SendToDiscordLog(xPlayer, job, 'PutItem', item, count)
@@ -263,7 +260,7 @@ AddEventHandler('monster_vault:putItem', function(job, type, item, count)
 
                 SendToDiscordLog(xPlayer, job, 'PutMoney', item, count)
             elseif job == 'vault' and Config.VaultInventory[job].AllowBlackMoney then
-                TriggerEvent('esx_addonaccount:getAccount', 'vault_' .. item, xPlayerOwner.identifier, function(account)
+                TriggerEvent('esx_addonaccount:getAccount', 'vault_' .. item, xPlayer.identifier, function(account)
                     xPlayer.removeAccountMoney(item, count)
                     account.addMoney(count)
                 end)
@@ -303,7 +300,7 @@ AddEventHandler('monster_vault:putItem', function(job, type, item, count)
                 SendToDiscordLog(xPlayer, job, 'PutWeapon', item, count, msg)
             end)
         elseif job == 'vault' then
-            TriggerEvent('esx_datastore:getDataStore', 'vault', xPlayerOwner.identifier, function(store)
+            TriggerEvent('esx_datastore:getDataStore', 'vault', xPlayer.identifier, function(store)
                 local storeWeapons = store.get('weapons') or {}
 
                 table.insert(storeWeapons, {

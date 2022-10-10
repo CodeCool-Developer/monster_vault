@@ -8,7 +8,7 @@ end
 
 -- ปรับแต่งแจ้งเตือน ฝั่ง Client
 Config.ClientOnNotify = function(message)
-    TriggerEvent("pNotify:SendNotification", { text = msg, type = "error" })
+    TriggerEvent("pNotify:SendNotification", { text = message, type = "error" })
 
     --exports.nc_notify:PushNotification({ title = message, type = 'error', duration = 4000 })
 end
