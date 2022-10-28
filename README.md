@@ -20,9 +20,11 @@ Config.EventRoute = {
 Config.VaultInventory = {
     ['vault'] = {
         Name = 'ประชาชน',
-        Coords = vector3(1734.24, 3323.88, 41.24),
-        Heading = 12.36,
-        Model = '',
+        Coords = {
+            vector4(1736.28, 3308.08, 41.2, 3.12),
+            vector4(1722.6, 3306.92, 41.24, 0.4)
+        },
+        Model = 'p_v_43_safe_s',
         AllowBlackMoney = true,         -- vault_black_money
         NeedItemLicense = {
             'vault_key',
@@ -30,9 +32,7 @@ Config.VaultInventory = {
             'vault_key_7_day',
         },
         ItemBlackList = {
-            'money',
-            'water',
-            'WEAPON_GOLFCLUB',
+
         },
         DiscordHook = {
             ["PutItem"]     = "link discord หรือ hook name", -- นำไอเท็มเข้า
@@ -45,17 +45,40 @@ Config.VaultInventory = {
     },
     ['police'] = {
         Name = 'ตำรวจ',
-        Coords = vector3(452.24, -974.56, 30.68),
-        Heading = 268.94,
+        Coords = {
+            vector4(1759.0, 3284.56, 41.16, 280.08),
+            vector4(1762.64, 3269.8, 41.32, 242.28)
+        },
         Model = 'p_v_43_safe_s',
-        AllowBlackMoney = false,         -- society_police_black_money
+        AllowBlackMoney = false,
         NeedItemLicense = {
             'vault_key_police',
         },
         ItemBlackList = {
-            'money',
-            'water',
-            'WEAPON_GOLFCLUB',
+
+        },
+        DiscordHook = {
+            ["PutItem"]     = "link discord หรือ hook name", -- นำไอเท็มเข้า
+            ["PutMoney"]    = "link discord หรือ hook name", -- นำเงินเข้า
+            ["PutWeapon"]   = "link discord หรือ hook name", -- นำอาวุธเข้า
+            ["GetItem"]     = "link discord หรือ hook name", -- นำไอเท็มออก
+            ["GetMoney"]    = "link discord หรือ hook name", -- นำเงินออก
+            ["GetWeapon"]   = "link discord หรือ hook name", -- นำอาวุธออก
+        }
+    },
+    ['ambulance'] = {
+        Name = 'หมอ',
+        Coords = {
+            vector4(1740.88, 3263.04, 41.28, 107.2),
+            vector4(1733.28, 3276.48, 41.12, 122.28)
+        },
+        Model = 'p_v_43_safe_s',
+        AllowBlackMoney = false,
+        NeedItemLicense = {
+            'vault_key_ambulance',
+        },
+        ItemBlackList = {
+
         },
         DiscordHook = {
             ["PutItem"]     = "link discord หรือ hook name", -- นำไอเท็มเข้า
