@@ -1,8 +1,9 @@
 Config = {}
 
 Config.EventRoute = {
-    ['openVaultInventory'] = 'esx_inventoryhud:openVaultInventory', -- ของกระเป๋า NC (ถ้าไม่ตรง ให้อ่านคำอธิบายด้านล่าง)
-    --['openVaultInventory'] = 'monster_inventoryhud:openVaultInventory', -- ของกระเป๋า esx_inventoryhud (ถ้าไม่ตรง ให้อ่านคำอธิบายด้านล่าง)
+    ['getSharedObject'] = 'esx:getSharedObject',                            -- Default: 'esx:getSharedObject'
+    ['openVaultInventory'] = 'esx_inventoryhud:openVaultInventory',         -- ของกระเป๋า NC (ถ้าไม่ตรง ให้อ่านคำอธิบายด้านล่าง)
+    --['openVaultInventory'] = 'monster_inventoryhud:openVaultInventory',   -- ของกระเป๋า esx_inventoryhud (ถ้าไม่ตรง ให้อ่านคำอธิบายด้านล่าง)
 }
 
 ---อธิบาย ['openVaultInventory'] เพิ่มเติม
@@ -10,6 +11,8 @@ Config.EventRoute = {
 --      ถ้ากระเป๋า NC ให้ดูที่ nc_inventory_bridge/config.lua
 --      ถ้ากระเป๋า esx_inventoryhud ให้ดูที่ esx_inventoryhud/client/vault.lua
 ------------------------------------------------------------------
+
+Config.Debug = true
 
 Config.VaultMessage = {
     ["PutItem"] 	= "ได้ทำการนำไอเทม %s เก็บเข้าตู้เซฟ %s เป็นจำนวน %s ชิ้น",       -- นำไอเท็มเข้า
@@ -23,9 +26,11 @@ Config.VaultMessage = {
 Config.VaultInventory = {
     ['vault'] = {
         Name = 'ประชาชน',
-        Coords = vector3(1734.24, 3323.88, 41.24),
-        Heading = 12.36,
-        Model = '',
+        Coords = {
+            vector4(1736.28, 3308.08, 41.2, 3.12),
+            vector4(1722.6, 3306.92, 41.24, 0.4)
+        },
+        Model = 'p_v_43_safe_s',
         AllowBlackMoney = true,         -- vault_black_money
         NeedItemLicense = {
             'vault_key',
@@ -46,8 +51,10 @@ Config.VaultInventory = {
     },
     ['police'] = {
         Name = 'ตำรวจ',
-        Coords = vector3(452.24, -974.56, 30.68),
-        Heading = 268.94,
+        Coords = {
+            vector4(1759.0, 3284.56, 41.16, 280.08),
+            vector4(1762.64, 3269.8, 41.32, 242.28)
+        },
         Model = 'p_v_43_safe_s',
         AllowBlackMoney = false,
         NeedItemLicense = {
@@ -67,8 +74,10 @@ Config.VaultInventory = {
     },
     ['ambulance'] = {
         Name = 'หมอ',
-        Coords = vector3(339.8, -575.32, 43.32),
-        Heading = 342.16,
+        Coords = {
+            vector4(1740.88, 3263.04, 41.28, 107.2),
+            vector4(1733.28, 3276.48, 41.12, 122.28)
+        },
         Model = 'p_v_43_safe_s',
         AllowBlackMoney = false,
         NeedItemLicense = {
@@ -88,8 +97,9 @@ Config.VaultInventory = {
     },
 }
 
+-- ชื่อ item ห้ามยัดเข้าตู้
 Config.ItemBlackList = {
-
+    --'water',
 }
 
 --TODO -- ตัวอย่างการใช้งานกับ nc_discordlogs หรือ azael_dc-serverlogs ตรง DiscordHook ให้เปลี่ยนจากใส่ link เป็นใส่ชื่อ hook ที่สร้างไว้ใน script log ของแต่ละเจ้า

@@ -1,6 +1,6 @@
 ESX = nil
 
-TriggerEvent('esx:getSharedObject', function(obj)
+TriggerEvent(Config.EventRoute['getSharedObject'], function(obj)
     ESX = obj
 end)
 
@@ -31,11 +31,14 @@ AddEventHandler('monster_vault:getItem', function(job, type, item, count)
                 local inventoryItem = inventory.getItem(item)
                 if count > 0 and inventoryItem.count >= count then
                     if sourceItem.limit ~= -1 and (sourceItem.count + count) > sourceItem.limit then
-                        Config.ServerOnNotify(xPlayer, {
-                            message = 'พื้นที่ในกระเป๋าไม่เพียงพอ',
-                            type = 'error',
-                            duration = 4000
-                        })
+                        local status, err = pcall(function()
+                            Config.ServerOnNotify(xPlayer, {
+                                message = 'พื้นที่ในกระเป๋าไม่เพียงพอ',
+                                type = 'error',
+                                duration = 4000
+                            })
+                        end)
+                        logError('Config.ServerOnNotify', err)
                     else
                         inventory.removeItem(item, count)
                         xPlayer.addInventoryItem(item, count)
@@ -43,11 +46,14 @@ AddEventHandler('monster_vault:getItem', function(job, type, item, count)
                         SendToDiscordLog(xPlayer, job, 'GetItem', item, count)
                     end
                 else
-                    Config.ServerOnNotify(xPlayer, {
-                        message = 'จำนวนไอเทมในตู้มีไม่เพียงพอ',
-                        type = 'error',
-                        duration = 4000
-                    })
+                    local status, err = pcall(function()
+                        Config.ServerOnNotify(xPlayer, {
+                            message = 'จำนวนไอเทมในตู้มีไม่เพียงพอ',
+                            type = 'error',
+                            duration = 4000
+                        })
+                    end)
+                    logError('Config.ServerOnNotify', err)
                 end
             end)
         elseif job == 'vault' then
@@ -56,30 +62,39 @@ AddEventHandler('monster_vault:getItem', function(job, type, item, count)
 
                 if count > 0 and inventoryItem.count >= count then
                     if sourceItem.limit ~= -1 and (sourceItem.count + count) > sourceItem.limit then
-                        Config.ServerOnNotify(xPlayer, {
-                            message = 'พื้นที่ในกระเป๋าไม่เพียงพอ',
-                            type = 'error',
-                            duration = 4000
-                        })
+                        local status, err = pcall(function()
+                            Config.ServerOnNotify(xPlayer, {
+                                message = 'พื้นที่ในกระเป๋าไม่เพียงพอ',
+                                type = 'error',
+                                duration = 4000
+                            })
+                        end)
+                        logError('Config.ServerOnNotify', err)
                     else
                         inventory.removeItem(item, count)
                         xPlayer.addInventoryItem(item, count)
                         SendToDiscordLog(xPlayer, job, 'GetItem', item, count)
                     end
                 else
-                    Config.ServerOnNotify(xPlayer, {
-                        message = 'จำนวนไอเทมในตู้มีไม่เพียงพอ',
-                        type = 'error',
-                        duration = 4000
-                    })
+                    local status, err = pcall(function()
+                        Config.ServerOnNotify(xPlayer, {
+                            message = 'จำนวนไอเทมในตู้มีไม่เพียงพอ',
+                            type = 'error',
+                            duration = 4000
+                        })
+                    end)
+                    logError('Config.ServerOnNotify', err)
                 end
             end)
         else
-            Config.ServerOnNotify(xPlayer, {
-                message = 'อาชีพของคุณไม่สามารถใช้งานตู้เซฟนี้ได้',
-                type = 'error',
-                duration = 4000
-            })
+            local status, err = pcall(function()
+                Config.ServerOnNotify(xPlayer, {
+                    message = 'อาชีพของคุณไม่สามารถใช้งานตู้เซฟนี้ได้',
+                    type = 'error',
+                    duration = 4000
+                })
+            end)
+            logError('Config.ServerOnNotify', err)
         end
     elseif type == 'item_account' then
         if xPlayer.job.name == job then
@@ -91,11 +106,14 @@ AddEventHandler('monster_vault:getItem', function(job, type, item, count)
                     xPlayer.addAccountMoney(item, count)
                     SendToDiscordLog(xPlayer, job, 'GetMoney', item, count)
                 else
-                    Config.ServerOnNotify(xPlayer, {
-                        message = 'จำนวนเงินไม่ถูกต้อง',
-                        type = 'error',
-                        duration = 4000
-                    })
+                    local status, err = pcall(function()
+                        Config.ServerOnNotify(xPlayer, {
+                            message = 'จำนวนเงินไม่ถูกต้อง',
+                            type = 'error',
+                            duration = 4000
+                        })
+                    end)
+                    logError('Config.ServerOnNotify', err)
                 end
             end)
         elseif job == 'vault' then
@@ -108,19 +126,25 @@ AddEventHandler('monster_vault:getItem', function(job, type, item, count)
 
                     SendToDiscordLog(xPlayer, job, 'GetMoney', item, count)
                 else
-                    Config.ServerOnNotify(xPlayer, {
-                        message = 'จำนวนเงินไม่ถูกต้อง',
-                        type = 'error',
-                        duration = 4000
-                     })
+                    local status, err = pcall(function()
+                        Config.ServerOnNotify(xPlayer, {
+                            message = 'จำนวนเงินไม่ถูกต้อง',
+                            type = 'error',
+                            duration = 4000
+                        })
+                    end)
+                    logError('Config.ServerOnNotify', err)
                 end
             end)
         else
-            Config.ServerOnNotify(xPlayer, {
-                message = 'อาชีพของคุณไม่สามารถใช้งานตู้เซฟนี้ได้',
-                type = 'error',
-                duration = 4000
-            })
+            local status, err = pcall(function()
+                Config.ServerOnNotify(xPlayer, {
+                    message = 'อาชีพของคุณไม่สามารถใช้งานตู้เซฟนี้ได้',
+                    type = 'error',
+                    duration = 4000
+                })
+            end)
+            logError('Config.ServerOnNotify', err)
         end
     elseif type == 'item_weapon' then
         if xPlayer.job.name == job then
@@ -175,11 +199,14 @@ AddEventHandler('monster_vault:getItem', function(job, type, item, count)
                 SendToDiscordLog(xPlayer, job, 'GetWeapon', item, count, msg)
             end)
         else
-            Config.ServerOnNotify(xPlayer, {
-                message = 'อาชีพของคุณไม่สามารถใช้งานตู้เซฟนี้ได้',
-                type = 'error',
-                duration = 4000
-            })
+            local status, err = pcall(function()
+                Config.ServerOnNotify(xPlayer, {
+                    message = 'อาชีพของคุณไม่สามารถใช้งานตู้เซฟนี้ได้',
+                    type = 'error',
+                    duration = 4000
+                })
+            end)
+            logError('Config.ServerOnNotify', err)
         end
     end
 
@@ -191,24 +218,26 @@ AddEventHandler('monster_vault:putItem', function(job, type, item, count)
     local xPlayer = ESX.GetPlayerFromId(_source)
 
     if ArrayIsInOne(Config.ItemBlackList, item) then
-        pcall(function()
+        local status, err = pcall(function()
             Config.ServerOnNotify(xPlayer, {
                 message = 'คุณไม่สามารถเก็บไอเทม "' .. item .. '" เข้าตู้เซฟนี้ได้',
                 type = 'warning',
                 duration = 4000
             })
         end)
+        logError('Config.ServerOnNotify', err)
         return
     end
 
     if ArrayIsInOne(Config.VaultInventory[job].ItemBlackList, item) then
-        pcall(function()
+        local status, err = pcall(function()
             Config.ServerOnNotify(xPlayer, {
                 message = 'คุณไม่สามารถเก็บไอเทม "' .. item .. '" เข้าตู้เซฟนี้ได้',
                 type = 'warning',
                 duration = 4000
             })
         end)
+        logError('Config.ServerOnNotify', err)
         return
     end
 
@@ -229,22 +258,24 @@ AddEventHandler('monster_vault:putItem', function(job, type, item, count)
                     SendToDiscordLog(xPlayer, job, 'PutItem', item, count)
                 end)
             else
-                pcall(function()
+                local status, err = pcall(function()
                     Config.ServerOnNotify(xPlayer, {
                         message = 'อาชีพของคุณไม่สามารถเก็บไอเทมเข้าตู้เซฟนี้ได้',
                         type = 'error',
                         duration = 4000
                     })
                 end)
+                logError('Config.ServerOnNotify', err)
             end
         else
-            pcall(function()
+            local status, err = pcall(function()
                 Config.ServerOnNotify(xPlayer, {
                     message = 'จำนวนไม่ถูกต้อง',
                     type = 'error',
                     duration = 4000
                 })
             end)
+            logError('Config.ServerOnNotify', err)
         end
 
     elseif type == 'item_account' then
@@ -266,18 +297,24 @@ AddEventHandler('monster_vault:putItem', function(job, type, item, count)
                 end)
                 SendToDiscordLog(xPlayer, job, 'PutMoney', item, count)
             else
+                local status, err = pcall(function()
+                    Config.ServerOnNotify(xPlayer, {
+                        message = 'ตู้นี้ไม่สามารถเก็บเงินแดงได้',
+                        type = 'error',
+                        duration = 4000
+                    })
+                end)
+                logError('Config.ServerOnNotify', err)
+            end
+        else
+            local status, err = pcall(function()
                 Config.ServerOnNotify(xPlayer, {
-                    message = 'ตู้นี้ไม่สามารถเก็บเงินแดงได้',
+                    message = 'จำนวนเงินไม่ถูกต้อง',
                     type = 'error',
                     duration = 4000
                 })
-            end
-        else
-            Config.ServerOnNotify(xPlayer, {
-                message = 'จำนวนเงินไม่ถูกต้อง',
-                type = 'error',
-                duration = 4000
-            })
+            end)
+            logError('Config.ServerOnNotify', err)
         end
     elseif type == 'item_weapon' then
         if xPlayer.job.name == job then
@@ -318,117 +355,79 @@ AddEventHandler('monster_vault:putItem', function(job, type, item, count)
                 SendToDiscordLog(xPlayer, job, 'PutWeapon', item, count, msg)
             end)
         else
-            pcall(function()
+            local status, err = pcall(function()
                 Config.ServerOnNotify(xPlayer, {
                     message = 'อาชีพของคุณไม่สามารถเก็บอาวุธเข้าตู้เซฟนี้ได้',
                     type = 'error',
                     duration = 4000
                 })
             end)
+            logError('Config.ServerOnNotify', err)
         end
     end
 
 end)
 
 ESX.RegisterServerCallback('monster_vault:getVaultInventory', function(source, cb, item, refresh)
-    -- local xPlayer    = ESX.GetPlayerFromIdentifier(owner)
     local xPlayer = ESX.GetPlayerFromId(source)
-    local xItem = nil
-
-    for k, v in pairs(item.needItemLicense) do
-        if v ~= '' or v ~= nil then
-            xItem = xPlayer.getInventoryItem(v)
-            break
-        end
-    end
-
     local refresh = refresh or false
 
-    local isPass = true
+    local blackMoney = 0
+    local items = {}
+    local weapons = {}
 
-    if not refresh and #item.needItemLicense > 0 then
-        if xItem == nil or xItem.count < 1 then
-            isPass = false
-        end
+    local typeVault = ''
+    local society = false
+    if string.find(item.job, "vault") then
+        typeVault = item.job
+    else
+        typeVault = "society_" .. item.job
+        society = true
     end
 
-    if isPass then
-        local blackMoney = 0
-        local items = {}
-        local weapons = {}
-
-        if item.job == xPlayer.job.name then
-            print('u job: ' .. xPlayer.job.name)
-        end
-
-        local typeVault = ''
-        local society = false
-        if string.find(item.job, "vault") then
-            typeVault = item.job
+    if society then
+        if Config.VaultInventory[item.job].AllowBlackMoney then
+            TriggerEvent('esx_addonaccount:getSharedAccount', typeVault .. '_black_money', function(account)
+                blackMoney = account.money
+            end)
         else
-            typeVault = "society_" .. item.job
-            society = true
+            blackMoney = 0
         end
 
-        if society then
-
-            if Config.VaultInventory[item.job].AllowBlackMoney then
-                TriggerEvent('esx_addonaccount:getSharedAccount', typeVault .. '_black_money', function(account)
-                    blackMoney = account.money
-                end)
-            else
-                blackMoney = 0
-            end
-
-            print(typeVault)
-
-            TriggerEvent('esx_addoninventory:getSharedInventory', typeVault, function(inventory)
-                items = inventory.items
-            end)
-            TriggerEvent('esx_datastore:getSharedDataStore', typeVault, function(store)
-                weapons = store.get('weapons') or {}
-            end)
-            cb({
-                blackMoney = blackMoney,
-                items = items,
-                weapons = weapons,
-                job = item.job
-            })
-        else
-            if Config.VaultInventory[item.job].AllowBlackMoney then
-                TriggerEvent('esx_addonaccount:getAccount', typeVault .. '_black_money', xPlayer.identifier, function(account)
-                    blackMoney = account.money
-                end)
-            else
-                blackMoney = 0
-            end
-
-            TriggerEvent('esx_addoninventory:getInventory', typeVault, xPlayer.identifier, function(inventory)
-                items = inventory.items
-            end)
-
-            TriggerEvent('esx_datastore:getDataStore', typeVault, xPlayer.identifier, function(store)
-                weapons = store.get('weapons') or {}
-            end)
-
-            cb({
-                blackMoney = blackMoney,
-                items = items,
-                weapons = weapons,
-                job = item.job
-            })
-        end
+        TriggerEvent('esx_addoninventory:getSharedInventory', typeVault, function(inventory)
+            items = inventory.items
+        end)
+        TriggerEvent('esx_datastore:getSharedDataStore', typeVault, function(store)
+            weapons = store.get('weapons') or {}
+        end)
+        cb({
+            blackMoney = blackMoney,
+            items = items,
+            weapons = weapons,
+            job = item.job
+        })
     else
-        cb(false)
+        if Config.VaultInventory[item.job].AllowBlackMoney then
+            TriggerEvent('esx_addonaccount:getAccount', typeVault .. '_black_money', xPlayer.identifier, function(account)
+                blackMoney = account.money
+            end)
+        else
+            blackMoney = 0
+        end
+
+        TriggerEvent('esx_addoninventory:getInventory', typeVault, xPlayer.identifier, function(inventory)
+            items = inventory.items
+        end)
+
+        TriggerEvent('esx_datastore:getDataStore', typeVault, xPlayer.identifier, function(store)
+            weapons = store.get('weapons') or {}
+        end)
+
+        cb({
+            blackMoney = blackMoney,
+            items = items,
+            weapons = weapons,
+            job = item.job
+        })
     end
 end)
-
-function ArrayIsInOne(list, search)
-    local text = search:lower()
-    for k, v in ipairs(list) do
-        if v:lower() == text:lower() then
-            return true
-        end
-    end
-    return false
-end

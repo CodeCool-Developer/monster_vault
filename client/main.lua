@@ -1,85 +1,123 @@
-local Keys = {
-    ["ESC"] = 322, ["F1"] = 288, ["F2"] = 289, ["F3"] = 170, ["F5"] = 166, ["F6"] = 167, ["F7"] = 168, ["F8"] = 169, ["F9"] = 56, ["F10"] = 57,
-    ["~"] = 243, ["1"] = 157, ["2"] = 158, ["3"] = 160, ["4"] = 164, ["5"] = 165, ["6"] = 159, ["7"] = 161, ["8"] = 162, ["9"] = 163, ["-"] = 84, ["="] = 83, ["BACKSPACE"] = 177,
-    ["TAB"] = 37, ["Q"] = 44, ["W"] = 32, ["E"] = 38, ["R"] = 45, ["T"] = 245, ["Y"] = 246, ["U"] = 303, ["P"] = 199, ["["] = 39, ["]"] = 40, ["ENTER"] = 18,
-    ["CAPS"] = 137, ["A"] = 34, ["S"] = 8, ["D"] = 9, ["F"] = 23, ["G"] = 47, ["H"] = 74, ["K"] = 311, ["L"] = 182,
-    ["LEFTSHIFT"] = 21, ["Z"] = 20, ["X"] = 73, ["C"] = 26, ["V"] = 0, ["B"] = 29, ["N"] = 249, ["M"] = 244, [","] = 82, ["."] = 81,
-    ["LEFTCTRL"] = 36, ["LEFTALT"] = 19, ["SPACE"] = 22, ["RIGHTCTRL"] = 70,
-    ["HOME"] = 213, ["PAGEUP"] = 10, ["PAGEDOWN"] = 11, ["DELETE"] = 178,
-    ["LEFT"] = 174, ["RIGHT"] = 175, ["TOP"] = 27, ["DOWN"] = 173,
-    ["NENTER"] = 201, ["N4"] = 108, ["N5"] = 60, ["N6"] = 107, ["N+"] = 96, ["N-"] = 97, ["N7"] = 117, ["N8"] = 61, ["N9"] = 118
-}
-
 ESX = nil
+local objPropSpawnList = {}
+local vaultType = {}
 
 Citizen.CreateThread(function()
     while ESX == nil do
-        TriggerEvent('esx:getSharedObject', function(obj)
+        TriggerEvent(Config.EventRoute['getSharedObject'], function(obj)
             ESX = obj
         end)
         Citizen.Wait(0)
     end
 end)
 
-RegisterNetEvent('esx:playerLoaded')
-AddEventHandler('esx:playerLoaded', function(xPlayer)
-    ESX.PlayerData = xPlayer
-end)
-
-local vaultType = {}
-
-RegisterNetEvent('esx:setJob')
-AddEventHandler('esx:setJob', function(job)
-    ESX.PlayerData.job = job
+AddEventHandler('onResourceStop', function(resource)
+    if resource == GetCurrentResourceName() then
+        for k, v in pairs(objPropSpawnList) do
+            log('delete object : ' .. tostring(v))
+            if v ~= nil then
+                ESX.Game.DeleteObject(v)
+            end
+        end
+    end
 end)
 
 function OpenVaultInventoryMenu(data)
-    if data.job == ESX.PlayerData.job.name or data.job == 'vault' then
-        vaultType = data
-        ESX.TriggerServerCallback("monster_vault:getVaultInventory", function(inventory)
-            if not inventory then
-                Config.ClientOnNotify('คุณไม่มี กุญแจ ในการเปิดตู้เซฟ!')
-            else
+    if data.job == ESX.GetPlayerData().job.name or data.job == 'vault' then
+        if checkItemUse(data.needItemLicense) then
+            vaultType = data
+            ESX.TriggerServerCallback("monster_vault:getVaultInventory", function(inventory)
                 TriggerEvent(Config.EventRoute['openVaultInventory'], inventory)
-            end
-        end, data, false)
+            end, data, false)
+        else
+            Config.ClientOnNotify('คุณไม่มี กุญแจ ในการเปิดตู้เซฟ!')
+        end
     else
         Config.ClientOnNotify('คุณไม่ได้รับอนุญาต เพราะไม่ใช่หน่วยงานที่กำหนด!!')
         Citizen.Wait(8000)
     end
 end
 
+function checkItemUse(itemList)
+    local inventory = ESX.GetPlayerData().inventory
+    for i = 1, #inventory do
+        for k, v in pairs(itemList) do
+            if v == inventory[i].name and inventory[i].count > 0 then
+                return true
+            end
+        end
+    end
+    return false
+end
+
 Citizen.CreateThread(function()
-    while ESX == nil or ESX.PlayerData == nil or ESX.PlayerData.job == nil do
+    while ESX == nil or ESX.GetPlayerData().job == nil do
         Citizen.Wait(1000)
     end
     for k, v in pairs(Config.VaultInventory) do
-        ESX.Game.SpawnLocalObject(v.Model, v.Coords, function(obj)
-            SetEntityHeading(obj, v.Heading)
-            PlaceObjectOnGroundProperly(obj)
-            FreezeEntityPosition(obj, true)
-        end)
+        for i, j in pairs(v.Coords) do
+            ESX.Game.SpawnLocalObject(v.Model, j, function(obj)
+                objPropSpawnList = obj
+                SetEntityHeading(obj, j.w)
+                PlaceObjectOnGroundProperly(obj)
+                FreezeEntityPosition(obj, true)
+            end)
+        end
     end
 end)
 
--- Key controls
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(0)
         local coords = GetEntityCoords(PlayerPedId())
         for k, v in pairs(Config.VaultInventory) do
-            local dist = GetDistanceBetweenCoords(coords, v.Coords, true)
-            if dist < 2 then
-                Config.ClientOnShowHelpMenu(v)
-                if IsControlJustReleased(0, Keys['E']) then
-                    OpenVaultInventoryMenu({ job = k, needItemLicense = v.NeedItemLicense })
-                else
-                    break
+            for i, j in pairs(v.Coords) do
+                local dist = GetDistanceBetweenCoords(coords, j, true)
+                if dist < 2 then
+                    Config.ClientOnShowHelpMenu(v)
+                    if IsControlJustReleased(0, Keys['E']) then
+                        OpenVaultInventoryMenu({ job = k, needItemLicense = v.NeedItemLicense })
+                    else
+                        break
+                    end
                 end
             end
         end
     end
 end)
+
+function CheckPlayerInArea()
+    Citizen.CreateThread(function()
+        local loopDelay = 1000
+        while true do
+            if activeArea ~= nil then
+                loopDelay = 250
+                local PlayerCoords = GetEntityCoords(PlayerPedId())
+                local propCoords = activeArea.Coords
+
+                if GetDistanceBetweenCoords(PlayerCoords, propCoords.x, propCoords.y, propCoords.z, true) > activeArea.AreaSize then
+                    ESX.Game.DeleteObject(objPropSpawn)
+                    activeArea = nil
+                    isSpawnProp = false
+                    objPropSpawn = nil
+                else
+                    if not isSpawnProp then
+                        spawnObject(activeArea)
+                    end
+                end
+            else
+                loopDelay = 1000
+                local PlayerCoords = GetEntityCoords(PlayerPedId())
+                for k, v in pairs(Config.PropList) do
+                    if GetDistanceBetweenCoords(PlayerCoords, v.Coords.x, v.Coords.y, v.Coords.z, true) < v.AreaSize then
+                        activeArea = v
+                    end
+                end
+            end
+            Citizen.Wait(loopDelay)
+        end
+    end)
+end
 
 function getMonsterVaultLicense()
     return vaultType
