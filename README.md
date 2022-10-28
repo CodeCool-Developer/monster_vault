@@ -96,25 +96,26 @@ Config.VaultInventory = {
 ### ตัวอย่าง Config [config.function.lua](https://github.com/CodeCool-Developer/monster_vault/blob/main/config/config.function.lua)
 ```
 -- ปรับแต่ง Show Help Menu
+-- ปรับแต่ง Show Help Menu
 Config.ClientOnShowHelpMenu = function(vault)
-    --ESX.ShowHelpNotification("Press ~INPUT_CONTEXT~ Open Safe")
+    ESX.ShowHelpNotification("Press ~INPUT_CONTEXT~ Open Safe")
 
     -- cc_text_UI ดาวน์โหลดได้ที่ https://github.com/CodeCool-Developer/cc_text_UI
-    exports['cc_text_UI']:ShowHelpNotification('กด ~INPUT_CONTEXT~ เพื่อเปิด ~y~ตู้เซฟ' .. vault.Name .. '~s~')
+    --exports['cc_text_UI']:ShowHelpNotification('กด ~INPUT_CONTEXT~ เพื่อเปิด ~y~ตู้เซฟ' .. vault.Name .. '~s~')
 end
 
 -- ปรับแต่งแจ้งเตือน ฝั่ง Client
 Config.ClientOnNotify = function(message)
-    --TriggerEvent("pNotify:SendNotification", { text = msg, type = "error" })
+    TriggerEvent("pNotify:SendNotification", { text = message, type = "error" })
 
-    exports.nc_notify:PushNotification({ title = message, type = 'error', duration = 4000 })
+    --exports.nc_notify:PushNotification({ title = message, type = 'error', duration = 4000 })
 end
 
 -- ปรับแต่งแจ้งเตือน ฝั่ง Server
 Config.ServerOnNotify = function(xPlayer, notify)
-    --TriggerClientEvent("pNotify:SendNotification", xPlayer.source, { text = notify.message, type = notify.type })
+    TriggerClientEvent("pNotify:SendNotification", xPlayer.source, { text = notify.message, type = notify.type })
 
-    exports.nc_notify:PushNotification(xPlayer.source, { title = notify.message, type = notify.type, duration = notify.duration })
+    --exports.nc_notify:PushNotification(xPlayer.source, { title = notify.message, type = notify.type, duration = notify.duration })
 end
 
 -- ปรับแต่งแจ้ง Discord Log ฝั่ง Server
