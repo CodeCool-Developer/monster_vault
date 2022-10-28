@@ -217,7 +217,7 @@ AddEventHandler('monster_vault:putItem', function(job, type, item, count)
     local _source = source
     local xPlayer = ESX.GetPlayerFromId(_source)
 
-    if ArrayIsInOne(Config.ItemBlackList, item) then
+    if ArrayIsOne(Config.ItemBlackList, item) then
         local status, err = pcall(function()
             Config.ServerOnNotify(xPlayer, {
                 message = 'คุณไม่สามารถเก็บไอเทม "' .. item .. '" เข้าตู้เซฟนี้ได้',
@@ -229,7 +229,7 @@ AddEventHandler('monster_vault:putItem', function(job, type, item, count)
         return
     end
 
-    if ArrayIsInOne(Config.VaultInventory[job].ItemBlackList, item) then
+    if ArrayIsOne(Config.VaultInventory[job].ItemBlackList, item) then
         local status, err = pcall(function()
             Config.ServerOnNotify(xPlayer, {
                 message = 'คุณไม่สามารถเก็บไอเทม "' .. item .. '" เข้าตู้เซฟนี้ได้',
